@@ -6,11 +6,33 @@ class window.AppView extends Backbone.View
   '
 
   events:
-    'click .hit-button': -> @model.get('playerHand').hit()
-    'click .stand-button': -> @model.get('playerHand').stand()
+    'click .hit-button': -> @hit()
+    'click .stand-button': -> @stand()
 
   initialize: ->
     @render()
+
+  disableActions: -> 
+    @.$el.find('.hit-button').prop('disabled', true)
+    @.$el.find('.stand-button').prop('disabled', true)
+ 
+
+  stand: ->
+    @disableActions()
+    @dealDealer()
+
+  dealDealer: ->
+    dealerHand = @model.get('dealerHand')
+    dealerHand.showHand()
+    while dealerHand.scores()[0] <= 16 and (dealerHand.scores()[1] <= 17 or dealerHand.scores()[1] > 21)
+      dealerHand.hit()
+
+  hit: ->
+    playerHand = @model.get('playerHand')
+    playerHand.hit()
+    #bust
+    if playerHand.scores()[0] > 20
+      @stand()
 
   render: ->
     @$el.children().detach()

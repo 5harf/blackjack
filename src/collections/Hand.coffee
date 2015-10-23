@@ -5,8 +5,11 @@ class window.Hand extends Backbone.Collection
 
   hit: ->
     @add(@deck.pop())
+    #this is an underscore function to return last item in an array
     @last()
 
+  showHand: ->
+    @at(0).flip()
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
