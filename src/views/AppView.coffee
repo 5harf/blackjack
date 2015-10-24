@@ -12,7 +12,11 @@ class window.AppView extends Backbone.View
 
   initialize: ->
     @gameModel = @model.get 'game'
+    @listenTo @gameModel, 'stand', @disableActions
+    @listenTo @gameModel, 'deal', @render 
+    @gameview = new GameView model: @gameModel
     @render()
+
 
   disableActions: -> 
     @.$el.find('.hit-button').prop('disabled', true)
@@ -22,6 +26,7 @@ class window.AppView extends Backbone.View
   render: ->
     @$el.children().detach()
     @$el.html @template()
+
     @$('.player-hand-container').html new HandView(collection: @gameModel.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @gameModel.get 'dealerHand').el
 

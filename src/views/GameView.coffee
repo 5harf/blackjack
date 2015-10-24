@@ -7,7 +7,7 @@ class window.GameView extends Backbone.View
 
 
   stand: ->
-    @disableActions()
+    # @disableActions()
     @dealDealer()
 
   dealDealer: ->
@@ -32,10 +32,10 @@ class window.GameView extends Backbone.View
       alert('win', playerScore, dealerScore)
 
   deal: ->
-    @model.initialize()
+    # @model.initialize()
     @.$el.find('.hit-button').prop('disabled', false)
     @.$el.find('.stand-button').prop('disabled', false)
-    @render()
+    # @render()
 
 
   hit: ->
@@ -43,5 +43,5 @@ class window.GameView extends Backbone.View
     playerHand.hit()
     #bust
     if playerHand.scores()[0] > 20
-      @stand()
+      @model.stand()
 

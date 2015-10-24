@@ -1,0 +1,77 @@
+diff --git a/src/models/Game.coffee b/src/models/Game.coffee
+index 1910c82..7c2edbf 100644
+--- a/src/models/Game.coffee
++++ b/src/models/Game.coffee
+@@ -5,13 +5,12 @@ class window.Game extends Backbone.Model
+     @set 'dealerHand', deck.dealDealer()
+ 
+   hit: ->
+-    console.log 'hit'
+     @trigger 'hit', @ 
+ 
+   stand: ->
+-    console.log 'stand'
+     @trigger 'stand', @
+ 
+   deal: ->
++    @initialize()
+     @trigger 'deal', @
+ 
+diff --git a/src/views/AppView.coffee b/src/views/AppView.coffee
+index c0fd669..891bb76 100644
+--- a/src/views/AppView.coffee
++++ b/src/views/AppView.coffee
+@@ -12,8 +12,12 @@ class window.AppView extends Backbone.View
+ 
+   initialize: ->
+     @gameModel = @model.get 'game'
++    @listenTo @gameModel, 'stand', @disableActions
++    @listenTo @gameModel, 'deal', @render 
++    @gameview = new GameView model: @gameModel
+     @render()
+ 
++
+   disableActions: -> 
+     @.$el.find('.hit-button').prop('disabled', true)
+     @.$el.find('.stand-button').prop('disabled', true)
+@@ -22,6 +26,7 @@ class window.AppView extends Backbone.View
+   render: ->
+     @$el.children().detach()
+     @$el.html @template()
++
+     @$('.player-hand-container').html new HandView(collection: @gameModel.get 'playerHand').el
+     @$('.dealer-hand-container').html new HandView(collection: @gameModel.get 'dealerHand').el
+ 
+diff --git a/src/views/GameView.coffee b/src/views/GameView.coffee
+index b2aaf6c..54dc98a 100644
+--- a/src/views/GameView.coffee
++++ b/src/views/GameView.coffee
+@@ -7,7 +7,7 @@ class window.GameView extends Backbone.View
+ 
+ 
+   stand: ->
+-    @disableActions()
++    # @disableActions()
+     @dealDealer()
+ 
+   dealDealer: ->
+@@ -32,10 +32,10 @@ class window.GameView extends Backbone.View
+       alert('win', playerScore, dealerScore)
+ 
+   deal: ->
+-    @model.initialize()
++    # @model.initialize()
+     @.$el.find('.hit-button').prop('disabled', false)
+     @.$el.find('.stand-button').prop('disabled', false)
+-    @render()
++    # @render()
+ 
+ 
+   hit: ->
+@@ -43,5 +43,5 @@ class window.GameView extends Backbone.View
+     playerHand.hit()
+     #bust
+     if playerHand.scores()[0] > 20
+-      @stand()
++      @model.stand()
+ 

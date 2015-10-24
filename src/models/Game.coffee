@@ -5,13 +5,12 @@ class window.Game extends Backbone.Model
     @set 'dealerHand', deck.dealDealer()
 
   hit: ->
-    console.log 'hit'
     @trigger 'hit', @ 
 
   stand: ->
-    console.log 'stand'
     @trigger 'stand', @
 
   deal: ->
+    @initialize()
     @trigger 'deal', @
 
