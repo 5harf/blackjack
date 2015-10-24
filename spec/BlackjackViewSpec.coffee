@@ -31,9 +31,6 @@ describe "AppView", ->
     view.$el.find('.hit-button').trigger('click')
     assert.strictEqual dealerHand.at(0).get('revealed'), true
 
-  # soft 17 they hit 
-  # hit on 16 and below
-
   it "Dealer does not take a card when > hard 16 or > soft 17", ->
     dealerHand.scores = -> [17, 18]
     view.dealDealer()
@@ -43,12 +40,8 @@ describe "AppView", ->
     hand = [new Card(rank: 1, suit: 1),
             new Card(rank: 1, suit: 1)]
     view.model.set 'dealerHand', new Hand(hand, new Deck, true)
-    dealer = view.model.get 'dealerHand'
-    console.log dealer
-    #console.log dealerHand.scores()  
-
+    dealerHand = view.model.get 'dealerHand'
     view.dealDealer()
-
     assert dealerHand.scores()[0] > 16
 
 
