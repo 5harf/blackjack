@@ -25,16 +25,20 @@ class window.GameView extends Backbone.View
     dealerScore = if dealerHand.scores()[1] > 21 then dealerHand.scores()[0] else dealerHand.scores()[1]
 
     if playerScore > 21 or (dealerScore <= 21 and dealerScore > playerScore)
+      @model.loss()
       alert('Dealer wins!', playerScore, dealerScore)
     else if playerScore == dealerScore
+      @model.push()
       alert "tie"
     else
+      @model.win()
       alert('win', playerScore, dealerScore)
 
   deal: ->
     # @model.initialize()
-    @.$el.find('.hit-button').prop('disabled', false)
-    @.$el.find('.stand-button').prop('disabled', false)
+    # @.$el.find('.hit-button').prop('disabled', false)
+    # @.$el.find('.stand-button').prop('disabled', false)
+    # @$el.find('.deal-button').prop('disabled', )
     # @render()
 
 

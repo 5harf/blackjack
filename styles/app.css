@@ -20,3 +20,12 @@
   width: 100%;
   height: 100%;
 }
+
+body {
+  background-image: url(http://fc06.deviantart.net/fs16/i/2007/138/7/c/poker_by_mimiss.jpg);
+  background-size: 100%;
+}
+
+span, h2 {
+  color:white;
+}
